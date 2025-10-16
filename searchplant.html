@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍁 AI 식물 상태 및 생장 조건 찾기 (가을 테마)</title>
+
+    <style>
+        /* 폰트 및 기본 설정 (스마트팜 디자인 참고) */
+        body {
+            font-family: 'Consolas', 'Malgun Gothic', monospace;
+            background-color: #F8E6CE; /* 따뜻한 크림/베이지색 */
+            color: #5A4A3B; /* 어두운 갈색 계열 글자색 */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            cursor: none; /* 낙엽 이펙트를 위해 커서 숨기기 */
+            text-align: center; /* 내용 중앙 정렬 */
+        }
+
+        /* 헤더 (스마트팜 디자인 참고) */
+        header {
+            background-color: #D36C2F; /* 따뜻한 오렌지 브라운 */
+            color: #FFFFFF;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 3px solid #E1854B;
+        }
+        #page-title {
+            font-size: 2.2em;
+            margin: 0;
+        }
+        header p {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        /* 컨테이너 및 패널 스타일 */
+        .container {
+            /* AI 기능에 맞게 컨테이너 중앙 배치 및 최대 폭 설정 */
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.95); /* 밝은 배경 */
+            padding: 30px;
+            border-radius: 10px;
+            /* 🎨 가을 패널 디자인 참고 */
+            border: 1px solid rgba(211, 108, 47, 0.4);
+            box-shadow: 0 0 15px rgba(211, 108, 47, 0.4);
+            transition: box-shadow 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        .container:hover {
+             box-shadow: 0 0 25px rgba(211, 108, 47, 0.6);
+        }
+
+        /* 제목 (스마트팜 디자인 참고) */
+        h2 {
+            color: #D36C2F; /* 눈에 띄는 주황/갈색 */
+            border-bottom: 1px solid #E1854B;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        /* 파일 입력 */
+        input[type="file"] {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #5A4A3B;
+            transition: border-color 0.3s;
+        }
+        input[type="file"]:hover {
+            border-color: #D36C2F;
+        }
+
+        /* 버튼 (스마트팜 디자인 참고) */
+        button {
+            background-color: #5A4A3B; /* 진한 갈색 버튼 */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #45382D;
+            box-shadow: 0 0 10px rgba(90, 74, 59, 0.5);
+        }
+
+        /* 결과 영역 (스마트팜 디자인 참고) */
+        #result-area {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #D36C2F; /* 강조 테두리 */
+            border-radius: 5px;
+            background-color: #FFF3E0; /* 밝은 배경 */
+            min-height: 100px;
+            text-align: left;
+            white-space: pre-wrap;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        #result-area strong {
+            color: #D36C2F;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .loading {
+            color: #D36C2F;
+            font-weight: bold;
+        }
+        .error {
+            color: #C62828; /* 짙은 빨강으로 오류 강조 */
+            font-weight: bold;
+            background-color: #FFEBEE;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+
+        /* 🍁 마우스 낙엽 이펙트 스타일 (기존 코드 유지) */
+        .leaf-particle {
+            position: absolute;
+            width: 15px; height: 15px;
+            background-color: transparent;
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            pointer-events: none;
+            opacity: 0;
+            animation: fallAndFade 2s forwards;
+            transform-origin: center center;
+            z-index: 9999;
+        }
+        .leaf-red { background-color: #C62828; }
+        .leaf-orange { background-color: #EF6C00; }
+        .leaf-yellow { background-color: #FBC02D; }
+        .leaf-brown { background-color: #6D4C41; }
+
+        @keyframes fallAndFade {
+            0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0.8; }
+            100% {
+                transform: translate(calc(var(--rand-x) * 1px), calc(var(--rand-y) * 1px)) scale(1.2) rotate(calc(var(--rand-deg) * 1deg));
+                opacity: 0;
+            }
+        }
+
+        /* 🍁 배경 낙엽 이펙트 스타일 (기존 코드 유지) */
+        .background-leaf {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            background-color: transparent;
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 9000;
+            animation-name: backgroundFallAndFade;
+            animation-duration: var(--leaf-duration);
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+        .bg-leaf-red { background-color: rgba(198, 40, 40, 0.8); }
+        .bg-leaf-orange { background-color: rgba(239, 108, 0, 0.85); }
+        .bg-leaf-yellow { background-color: rgba(251, 192, 45, 0.9); }
+        .bg-leaf-brown { background-color: rgba(109, 76, 65, 0.8); }
+
+        @keyframes backgroundFallAndFade {
+            0% {
+                transform: translateX(var(--start-x)) translateY(-300px) scale(var(--leaf-scale)) rotate(0deg);
+                opacity: 0.2;
+            }
+            10% { opacity: var(--leaf-opacity); }
+            90% { opacity: var(--leaf-opacity); }
+            100% {
+                transform: translateX(calc(var(--end-x) + (var(--wind-x) * 1px))) translateY(calc(100vh + 50px)) scale(var(--leaf-scale)) rotate(calc(var(--rand-deg) * 1deg));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+    <h2>🌿 식물 이미지 분석</h2>
+    <p>품종 정보, 상태 및 생장 조건을 얻고 싶은 <br>이미지를 선택해주세요</p>
+
+    <input type="file" id="plant-image" accept="image/*">
+
+    <button id="find-button">상태 및 정보 찾기 </button>
+
+    <div id="result-area">
+        <strong>검색 결과:</strong> 이곳에 식물의 이름, 상태, 생장 조건이 간결하게 표시됩니다.
+    </div>
+</div>
+
+<script>
+    // ***************************************************************
+    // *** 중요: 실제 Gemini API 키를 "YOUR_GEMINI_API_KEY" 대신 입력하세요! ***
+    // ***************************************************************
+    const GEMINI_API_KEY = "AIzaSyBxN74a9N6VkLi_CdwLRPfZ7nyJRqVJTQE";
+
+    document.getElementById('find-button').addEventListener('click', findPlantSpecies);
+
+    // 이미지를 base64 문자열로 변환하는 함수
+    function fileToGenerativePart(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64Data = event.target.result.split(',')[1];
+                resolve({
+                    inlineData: {
+                        data: base64Data,
+                        mimeType: file.type,
+                    },
+                });
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // 품종을 찾는 메인 함수 (API 호출)
+    async function findPlantSpecies() {
+        const fileInput = document.getElementById('plant-image');
+        const resultArea = document.getElementById('result-area');
+
+        if (fileInput.files.length === 0) {
+            resultArea.innerHTML = `<div class="error">⚠️ 오류: 먼저 이미지를 선택해주세요!</div>`;
+            return;
+        }
+        if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY" || !GEMINI_API_KEY) {
+            resultArea.innerHTML = `<div class="error">⚠️ 오류: 유효한 API 키를 'GEMINI_API_KEY' 변수에 입력해주세요!</div>`;
+            return;
+        }
+
+        const imageFile = fileInput.files[0];
+
+        // UI 상태 변경
+        resultArea.innerHTML = `<strong class="loading">🔍 이미지 분석 중... (네트워크 상황에 따라 시간이 걸릴 수 있습니다)</strong>`;
+
+        try {
+            const imagePart = await fileToGenerativePart(imageFile);
+
+            // 요청 메시지 (상태, 이름, 생장 조건만 간결하게 요청)
+            const prompt = "이 이미지 속 식물의 이름을 알려주세요. 그리고 이 식물의 현재 상태(건강, 병충해 여부 등)를 간결하게 평가해주세요. 마지막으로 이 식물을 잘 키우기 위한 생장 조건(물 주기, 햇빛, 온도)을 요약해서 알려주십시오. 답변은 각 정보를 '---'로 구분하여 세 가지 항목으로만 출력해주세요.";
+
+            // 요청 본문 구성
+            const requestBody = {
+                contents: [{
+                    parts: [
+                        imagePart,
+                        { text: prompt }
+                    ]
+                }],
+                generationConfig: {
+                    maxOutputTokens: 2048
+                }
+            };
+
+            // Gemini API 호출
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            // HTTP 상태 코드에 따른 오류 처리
+            if (!response.ok) {
+                const errorData = await response.json();
+                let errorMessage = `API 호출 실패: HTTP ${response.status} (${response.statusText})`;
+
+                if (errorData && errorData.error && errorData.error.message) {
+                    errorMessage += `<br>상세 내용: ${errorData.error.message}`;
+                }
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+
+            // 결과 표시
+            const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || "죄송합니다. 이미지를 분석하는 데 실패했거나 응답이 비어있습니다.";
+            resultArea.innerHTML = `<strong>✅ 분석 완료!</strong><br><br>${resultText}`;
+
+        } catch (error) {
+            // 오류 메시지를 화면에 표시
+            const displayMessage = error.message.includes("API 호출 실패")
+                ? error.message
+                : `네트워크 또는 CORS 오류가 발생했습니다. (브라우저 정책 문제) 콘솔(F12)을 확인해주세요!`;
+
+            resultArea.innerHTML = `<div class="error">⚠️ 오류 발생: ${displayMessage}</div>`;
+
+            // 콘솔에도 오류는 계속 출력
+            console.error("최종 오류:", error);
+        }
+    }
+
+
+    // 🍁 마우스 낙엽 이펙트 JavaScript
+    const mouseLeafColors = ['leaf-red', 'leaf-orange', 'leaf-yellow', 'leaf-brown'];
+
+    document.addEventListener('mousemove', function(e) {
+        const particle = document.createElement('div');
+        particle.className = 'leaf-particle';
+        document.body.appendChild(particle);
+
+        const randomColorClass = mouseLeafColors[Math.floor(Math.random() * mouseLeafColors.length)];
+        particle.classList.add(randomColorClass);
+
+        const size = Math.random() * 8 + 12;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+
+        particle.style.left = (e.clientX - size / 2) + 'px';
+        particle.style.top = (e.clientY - size / 2) + 'px';
+
+        // 회전과 좌우 움직임 강화
+        particle.style.setProperty('--rand-x', Math.random() * 300 - 150);
+        particle.style.setProperty('--rand-y', Math.random() * 250 + 70);
+        particle.style.setProperty('--rand-deg', Math.random() * 1080 - 540);
+
+        particle.addEventListener('animationend', function() {
+            particle.remove();
+        });
+    });
+
+    // 🍁 배경 낙엽 이펙트 JavaScript
+    const bgLeafColors = ['bg-leaf-red', 'bg-leaf-orange', 'bg-leaf-yellow', 'bg-leaf-brown'];
+
+    function createBackgroundLeaf() {
+        const leaf = document.createElement('div');
+        leaf.className = 'background-leaf';
+        document.body.appendChild(leaf);
+
+        const randomColorClass = bgLeafColors[Math.floor(Math.random() * bgLeafColors.length)];
+        leaf.classList.add(randomColorClass);
+
+        const size = Math.random() * 10 + 15;
+        leaf.style.width = size + 'px';
+        leaf.style.height = size + 'px';
+
+        const startX = Math.random() * window.innerWidth;
+        leaf.style.left = startX + 'px';
+
+        const duration = Math.random() * 5 + 10;
+
+        leaf.style.setProperty('--start-x', startX + 'px');
+        // 바람에 날리는 효과를 위해 좌우 움직임 폭을 더 넓게
+        leaf.style.setProperty('--end-x', (startX + (Math.random() * 400 - 200)) + 'px');
+        leaf.style.setProperty('--rand-deg', Math.random() * 1080 - 540);
+        leaf.style.setProperty('--leaf-duration', duration + 's');
+        leaf.style.setProperty('--leaf-scale', Math.random() * 0.7 + 0.8);
+        leaf.style.setProperty('--leaf-opacity', Math.random() * 0.2 + 0.7);
+
+        // 낙엽이 좌우로 흔들리며 떨어지는 느낌 추가 (backgroundFallAndFade 애니메이션에서 --wind-x 변수 활용)
+        leaf.style.setProperty('--wind-x', Math.random() * 100 - 50);
+
+        leaf.addEventListener('animationend', function() {
+            leaf.remove();
+        });
+    }
+
+    setInterval(createBackgroundLeaf, 300);
+</script>
+</body>
+</html>

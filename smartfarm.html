@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍁 스마트팜 대시보드 (가을 낙엽 테마)</title>
+    <title>스마트팜 - 싱그러운 초록빛 여름 에디션</title>
 
     <style>
         /* 폰트 및 기본 설정 */
         body {
-            /* 🎨 변경: 밝은 자연 배경색 -> 가을 느낌의 배경색 */
+            /* 🎨 변경: 전체적인 배경을 연한 초록빛으로 */
             font-family: 'Consolas', 'Malgun Gothic', monospace;
-            background-color: #F8E6CE; /* 따뜻한 크림/베이지색 */
-            color: #5A4A3B; /* 어두운 갈색 계열 글자색 */
+            background-color: #E8F5E9; /* 아주 연한 풀잎색 / 민트 그린 */
+            color: #1B5E20; /* 짙은 녹색 계열 글자색 */
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -20,12 +20,12 @@
 
         /* 헤더 */
         header {
-            /* ✨ 수정: 패딩 증가, 폰트 사이즈 키워서 시원하게 */
-            background-color: #D36C2F; /* 따뜻한 오렌지 브라운 */
+            /* 🎨 변경: 헤더 색상도 초록빛과 어울리게 */
+            background-color: #4CAF50; /* 중간 톤의 초록색 */
             color: #FFFFFF; /* 흰색 글씨 */
-            padding: 20px 15px; /* 상하 패딩 증가 */
+            padding: 20px 15px;
             text-align: center;
-            border-bottom: 3px solid #E1854B;
+            border-bottom: 3px solid #66BB6A;
         }
 
         #farm-name-container {
@@ -36,13 +36,14 @@
         }
 
         #farm-name {
-            font-size: 2.2em; /* 제목 폰트 크기 증가 */
+            font-size: 2.2em;
             margin: 0;
-            margin-right: 15px; /* 버튼과의 간격 */
+            margin-right: 15px;
         }
 
         #edit-name-btn {
-            background-color: #E1854B;
+            /* 🎨 변경: 버튼 색상도 초록빛과 어울리게 */
+            background-color: #66BB6A;
             color: #FFFFFF;
             border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 5px 10px;
@@ -52,7 +53,7 @@
             transition: background-color 0.2s;
         }
         #edit-name-btn:hover {
-            background-color: #C62828;
+            background-color: #388E3C; /* 짙은 녹색 */
         }
 
         header p {
@@ -61,13 +62,12 @@
         }
 
         #current-time {
-            /* ✨ 새로 추가: 시간 표시 스타일 */
             font-size: 1.0em;
             font-weight: 300;
             opacity: 0.9;
             margin-top: 10px;
             padding-top: 5px;
-            border-top: 1px solid rgba(255, 255, 255, 0.3); /* 연한 구분선 */
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
         }
         /* 컨테이너 및 레이아웃 */
         .container {
@@ -81,54 +81,54 @@
         /* 데이터/제어 패널 공통 스타일 */
         .dashboard-panel {
             flex: 1;
-            /* 🎨 변경: 불투명한 밝은 배경 */
-            background-color: rgba(255, 255, 255, 0.9); /* 흰색에 가까운 밝은 배경 */
+            /* 🎨 변경: 패널 테두리와 그림자도 초록색 계열로 */
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 25px;
             border-radius: 10px;
-            /* 🎨 변경: 테두리와 그림자 색상도 자연스럽게 */
-            border: 1px solid rgba(211, 108, 47, 0.4); /* 헤더색 계열 */
-            box-shadow: 0 0 15px rgba(211, 108, 47, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.4); /* 헤더색 계열 */
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
             backdrop-filter: blur(3px);
             transition: box-shadow 0.3s;
             position: relative;
-            z-index: 10; /* 패널의 z-index */
+            z-index: 10;
         }
         .dashboard-panel:hover {
-            box-shadow: 0 0 25px rgba(211, 108, 47, 0.5);
+            box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
         }
 
         /* 제목 */
         h2 {
-            color: #D36C2F; /* 제목은 눈에 띄는 주황/갈색 */
-            border-bottom: 1px solid #E1854B;
+            /* 🎨 변경: 제목색도 진한 초록색으로 */
+            color: #2E7D32; /* 짙은 초록색 */
+            border-bottom: 1px solid #4CAF50;
             padding-bottom: 10px;
             margin-top: 0;
         }
         .data-item {
             margin-bottom: 20px;
             padding: 10px 0;
-            border-bottom: 1px dashed rgba(0, 0, 0, 0.1); /* 밝은 배경에 맞는 구분선 */
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
         }
         .data-item strong {
             display: block;
             font-size: 1.2em;
-            color: #5A4A3B; /* 글자색 유지 */
+            color: #1B5E20; /* 짙은 녹색 */
             margin-bottom: 5px;
         }
-        /* 🎨 변경: 데이터 값 색상 */
+        /* 데이터 값 색상 */
         .data-value {
             font-size: 1.8em;
             font-weight: bold;
-            color: #007BFF; /* 강조를 위해 파란색 계열 유지 */
+            color: #33691E; /* 강조를 위한 짙은 녹색 */
         }
 
         /* 프로그레스바 */
         progress {
             width: 100%; height: 8px; -webkit-appearance: none; appearance: none; border-radius: 5px; margin-top: 5px;
         }
-        progress::-webkit-progress-bar { background-color: #F0D4B2; border-radius: 5px; } /* 밝은 배경에 맞는 기본색 */
-        progress::-webkit-progress-value { background-color: #D36C2F; border-radius: 5px; } /* 채우는 색상 */
-        progress::-moz-progress-bar { background-color: #D36C2F; border-radius: 5px; }
+        progress::-webkit-progress-bar { background-color: #C8E6C9; border-radius: 5px; } /* 밝은 녹색 */
+        progress::-webkit-progress-value { background-color: #66BB6A; border-radius: 5px; } /* 채우는 색상 */
+        progress::-moz-progress-bar { background-color: #66BB6A; border-radius: 5px; }
 
         /* 제어 패널 버튼 */
         .control-panel p {
@@ -138,8 +138,8 @@
             padding-top: 15px;
         }
         .control-panel button {
-            /* 🎨 변경: 버튼 색상 */
-            background-color: #E1854B; /* 가을 느낌 주황 */
+            /* 🎨 변경: 버튼 색상도 초록색 계열로 */
+            background-color: #66BB6A; /* 중간 녹색 */
             color: #FFFFFF;
             border: none;
             padding: 12px 20px;
@@ -151,30 +151,35 @@
             transition: background-color 0.3s, box-shadow 0.3s;
         }
         .control-panel button:hover {
-            background-color: #D36C2F;
-            box-shadow: 0 0 10px #E1854B;
+            background-color: #4CAF50; /* 짙은 녹색 */
+            box-shadow: 0 0 10px #81C784;
         }
 
-        /* 🍁 마우스 낙엽 이펙트 스타일 */
-        .leaf-particle {
+        /* 장치 상태 텍스트 색상 */
+        .status-on { color: #388E3C; } /* ON 색상 (짙은 녹색) */
+        .status-off { color: #A5D6A7; } /* OFF 색상 (연한 녹색) */
+        .status-auto { color: #66BB6A; } /* AUTO 색상 (기존 중간 녹색) */
+
+
+        /* 🌿 마우스 나뭇잎 이펙트 스타일 */
+        .leaf-particle-summer {
             position: absolute;
             width: 15px; height: 15px;
             background-color: transparent;
-            /* 🎨 변경: 낙엽 모양 */
             border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
             pointer-events: none;
             opacity: 0;
-            animation: fallAndFade 2s forwards;
+            animation: summerLeafFall 2s forwards;
             transform-origin: center center;
-            z-index: 9999; /* 마우스 이펙트가 가장 위에 보이도록 */
+            z-index: 9999;
         }
-        /* 🎨 변경: 낙엽 색상들 */
-        .leaf-red { background-color: #C62828; } /* 짙은 빨강 */
-        .leaf-orange { background-color: #EF6C00; } /* 짙은 주황 */
-        .leaf-yellow { background-color: #FBC02D; } /* 짙은 노랑 */
-        .leaf-brown { background-color: #6D4C41; } /* 갈색 */
+        /* 여름 나뭇잎 색상들 (파릇한 초록색 계열 유지) */
+        .leaf-light-green { background-color: rgba(102, 187, 106, 0.8); }
+        .leaf-medium-green { background-color: rgba(67, 160, 71, 0.85); }
+        .leaf-dark-green { background-color: rgba(27, 94, 32, 0.9); }
+        .leaf-lime { background-color: rgba(174, 234, 0, 0.7); }
 
-        @keyframes fallAndFade {
+        @keyframes summerLeafFall {
             0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0.8; }
             100% {
                 transform: translate(calc(var(--rand-x) * 1px), calc(var(--rand-y) * 1px)) scale(1.2) rotate(calc(var(--rand-deg) * 1deg));
@@ -182,40 +187,39 @@
             }
         }
 
-        /* 🍁 배경 낙엽 이펙트 스타일 */
-        .background-leaf {
+        /* 🌿 배경 나뭇잎 이펙트 스타일 */
+        .background-leaf-summer {
             position: fixed;
             width: 18px;
             height: 18px;
             background-color: transparent;
-            /* 🎨 변경: 낙엽 모양 */
             border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
             pointer-events: none;
             opacity: 0;
             z-index: 9000;
-            animation-name: backgroundFallAndFade;
-            animation-duration: var(--leaf-duration);
+            animation-name: backgroundSummerLeafFall;
+            animation-duration: var(--leaf-duration-summer);
             animation-timing-function: linear;
             animation-iteration-count: 1;
             animation-fill-mode: forwards;
         }
 
-        /* 🍁 배경 낙엽 색상 (투명도 강화) */
-        .bg-leaf-red { background-color: rgba(198, 40, 40, 0.8); }
-        .bg-leaf-orange { background-color: rgba(239, 108, 0, 0.85); }
-        .bg-leaf-yellow { background-color: rgba(251, 192, 45, 0.9); }
-        .bg-leaf-brown { background-color: rgba(109, 76, 65, 0.8); }
+        /* 배경 나뭇잎 색상 (초록색 계열 유지) */
+        .bg-leaf-light-green { background-color: rgba(102, 187, 106, 0.6); }
+        .bg-leaf-medium-green { background-color: rgba(67, 160, 71, 0.7); }
+        .bg-leaf-dark-green { background-color: rgba(27, 94, 32, 0.75); }
+        .bg-leaf-lime { background-color: rgba(174, 234, 0, 0.5); }
 
-        /* 🍁 배경 낙엽 애니메이션 */
-        @keyframes backgroundFallAndFade {
+        /* 배경 나뭇잎 애니메이션 (위에서 아래로 자연스럽게 낙하) */
+        @keyframes backgroundSummerLeafFall {
             0% {
-                transform: translateX(var(--start-x)) translateY(-300px) scale(var(--leaf-scale)) rotate(0deg);
-                opacity: 0.2; /* 시작 투명도 약간 높임 */
+                transform: translateX(var(--start-x)) translateY(-300px) scale(var(--leaf-scale-summer)) rotate(0deg);
+                opacity: 0.2;
             }
-            10% { opacity: var(--leaf-opacity); }
-            90% { opacity: var(--leaf-opacity); }
+            10% { opacity: var(--leaf-opacity-summer); }
+            90% { opacity: var(--leaf-opacity-summer); }
             100% {
-                transform: translateX(calc(var(--end-x) + (var(--wind-x) * 1px))) translateY(calc(100vh + 50px)) scale(var(--leaf-scale)) rotate(calc(var(--rand-deg) * 1deg));
+                transform: translateX(calc(var(--end-x) + (var(--wind-x-summer) * 1px))) translateY(calc(100vh + 50px)) scale(var(--leaf-scale-summer)) rotate(calc(var(--rand-deg-summer) * 1deg));
                 opacity: 0;
             }
         }
@@ -268,12 +272,11 @@
 </div>
 
 <script>
-    // 💡 헤더 이름 기본값 설정
-    const defaultFarmName = "[내 농장] SFOS DASHBOARD";
+    // 💡 변경: localStorage 키 정의
+    const FARM_NAME_KEY = 'smartFarmName';
+    const defaultFarmName = " ~식물 관리창 ";
 
-    // ✨ 헤더 추가 기능: 실시간 시간 업데이트 함수
     function updateTime() {
-        // 현재 시간 (한국 시간으로 가정)
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -286,59 +289,68 @@
         document.getElementById('current-time').textContent = timeString;
     }
 
-    // ✨ 헤더 추가 기능: 농장 이름 수정 함수
     function editFarmName() {
         const farmNameElement = document.getElementById('farm-name');
 
-        // 현재 이름을 기본값으로 설정하여 사용자에게 입력 프롬프트 제공
-        const newName = prompt("새로운 농장 이름을 입력하세요:", farmNameElement.textContent);
+        // 💾 수정: 현재 로드된 이름을 기본값으로 사용
+        const currentDisplayedName = farmNameElement.textContent;
+        const newName = prompt("변경할 헤더 명칭:", currentDisplayedName);
 
-        // 사용자가 입력을 취소하지 않고 새 이름을 입력했을 경우
         if (newName !== null && newName.trim() !== "") {
-            farmNameElement.textContent = newName.trim();
-            alert("농장 이름이 '" + newName.trim() + "'(으)로 변경되었어요!");
+            const trimmedName = newName.trim();
+            farmNameElement.textContent = trimmedName;
+
+            // 💾 추가: localStorage에 변경된 이름 저장
+            localStorage.setItem(FARM_NAME_KEY, trimmedName);
+
+            alert(" 헤더가 '" + trimmedName + "'(으)로 변경됩니다.");
         } else if (newName !== null) {
-            alert("이름이 비어있으면 안 돼요! 기존 이름이 유지됩니다.");
+            alert("공백은 허용 안함 기존 이름이 유지.");
         }
     }
 
-
-    // 장치 제어 함수: 모든 장치를 토글 형태로 동작
     function controlDevice(device) {
         const statusElement = document.getElementById(device + '-status');
         let currentStatus = statusElement.textContent;
         let newStatus;
 
-        // 펌프의 'AUTO' 상태는 논리적으로 'OFF'와 유사하게 처리하여 'ON'으로 토글
+        const ON_CLASS = 'status-on';
+        const OFF_CLASS = 'status-off';
+        const AUTO_CLASS = 'status-auto';
+
         if (device === 'pump' && currentStatus === 'AUTO') {
              currentStatus = 'OFF';
         }
 
-        // 상태 전환 로직
         if (currentStatus === 'ON') {
             newStatus = 'OFF';
-            statusElement.style.color = '#FF7043'; // OFF 색상 (연한 주황)
+            statusElement.classList.remove(ON_CLASS);
+            statusElement.classList.add(OFF_CLASS);
         } else {
             newStatus = 'ON';
-            statusElement.style.color = '#D36C2F'; // ON 색상 (주황)
+            statusElement.classList.remove(OFF_CLASS, AUTO_CLASS);
+            statusElement.classList.add(ON_CLASS);
         }
 
-        // 상태 업데이트
-        statusElement.textContent = newStatus;
+        if (device === 'pump' && newStatus === 'OFF') {
+            newStatus = 'AUTO';
+            statusElement.classList.remove(ON_CLASS, OFF_CLASS);
+            statusElement.classList.add(AUTO_CLASS);
+        }
 
+        statusElement.textContent = newStatus;
         console.log(device + " 장치를 " + newStatus + "로 전환 명령 전송");
         alert(device + " 장치를 " + newStatus + "로 전환했어요!");
     }
 
-    // 🍁 마우스 낙엽 이펙트 JavaScript
-    const mouseLeafColors = ['leaf-red', 'leaf-orange', 'leaf-yellow', 'leaf-brown'];
+    const mouseLeafColorsSummer = ['leaf-light-green', 'leaf-medium-green', 'leaf-dark-green', 'leaf-lime'];
 
     document.addEventListener('mousemove', function(e) {
         const particle = document.createElement('div');
-        particle.className = 'leaf-particle';
+        particle.className = 'leaf-particle-summer';
         document.body.appendChild(particle);
 
-        const randomColorClass = mouseLeafColors[Math.floor(Math.random() * mouseLeafColors.length)];
+        const randomColorClass = mouseLeafColorsSummer[Math.floor(Math.random() * mouseLeafColorsSummer.length)];
         particle.classList.add(randomColorClass);
 
         const size = Math.random() * 8 + 12;
@@ -348,25 +360,25 @@
         particle.style.left = (e.clientX - size / 2) + 'px';
         particle.style.top = (e.clientY - size / 2) + 'px';
 
-        // 회전과 좌우 움직임 강화
-        particle.style.setProperty('--rand-x', Math.random() * 300 - 150); // 좌우 폭 증가
-        particle.style.setProperty('--rand-y', Math.random() * 250 + 70); // 낙하 거리 증가
-        particle.style.setProperty('--rand-deg', Math.random() * 1080 - 540); // 회전 각도 증가
+        particle.style.setProperty('--rand-x', Math.random() * 200 - 100);
+        particle.style.setProperty('--rand-y', Math.random() * 200 + 50);
+        particle.style.setProperty('--rand-deg', Math.random() * 720 - 360);
+
+        particle.style.animationName = 'summerLeafFall';
 
         particle.addEventListener('animationend', function() {
             particle.remove();
         });
     });
 
-    // 🍁 배경 낙엽 이펙트 JavaScript
-    const bgLeafColors = ['bg-leaf-red', 'bg-leaf-orange', 'bg-leaf-yellow', 'bg-leaf-brown'];
+    const bgLeafColorsSummer = ['bg-leaf-light-green', 'bg-leaf-medium-green', 'bg-leaf-dark-green', 'bg-leaf-lime'];
 
-    function createBackgroundLeaf() {
+    function createBackgroundLeafSummer() {
         const leaf = document.createElement('div');
-        leaf.className = 'background-leaf';
+        leaf.className = 'background-leaf-summer';
         document.body.appendChild(leaf);
 
-        const randomColorClass = bgLeafColors[Math.floor(Math.random() * bgLeafColors.length)];
+        const randomColorClass = bgLeafColorsSummer[Math.floor(Math.random() * bgLeafColorsSummer.length)];
         leaf.classList.add(randomColorClass);
 
         const size = Math.random() * 10 + 15;
@@ -376,48 +388,58 @@
         const startX = Math.random() * window.innerWidth;
         leaf.style.left = startX + 'px';
 
-        const duration = Math.random() * 5 + 10;
+        const duration = Math.random() * 6 + 8;
 
         leaf.style.setProperty('--start-x', startX + 'px');
-        // 바람에 날리는 효과를 위해 좌우 움직임 폭을 더 넓게
-        leaf.style.setProperty('--end-x', (startX + (Math.random() * 400 - 200)) + 'px');
-        leaf.style.setProperty('--rand-deg', Math.random() * 1080 - 540); // 회전 각도 증가
-        leaf.style.setProperty('--leaf-duration', duration + 's');
-        leaf.style.setProperty('--leaf-scale', Math.random() * 0.7 + 0.8); // 스케일 변화 폭 증가
-        leaf.style.setProperty('--leaf-opacity', Math.random() * 0.2 + 0.7); // 투명도 최솟값 0.7로 유지
+        leaf.style.setProperty('--end-x', (startX + (Math.random() * 300 - 150)) + 'px');
+        leaf.style.setProperty('--rand-deg-summer', Math.random() * 1080 - 540);
+        leaf.style.setProperty('--leaf-duration-summer', duration + 's');
+        leaf.style.setProperty('--leaf-scale-summer', Math.random() * 0.6 + 0.7);
+        leaf.style.setProperty('--leaf-opacity-summer', Math.random() * 0.3 + 0.6);
 
-        // 낙엽이 좌우로 흔들리며 떨어지는 느낌 추가 (backgroundFallAndFade 애니메이션에서 --wind-x 변수 활용)
-        leaf.style.setProperty('--wind-x', Math.random() * 100 - 50); // -50px ~ 50px 사이의 바람 효과
+        leaf.style.setProperty('--wind-x-summer', Math.random() * 80 - 40);
+
+        leaf.style.animationName = 'backgroundSummerLeafFall';
 
         leaf.addEventListener('animationend', function() {
             leaf.remove();
         });
     }
 
-    setInterval(createBackgroundLeaf, 300);
+    setInterval(createBackgroundLeafSummer, 300);
 
-    // 페이지 로드 시 이름과 초기 상태 색상 설정
+    // 💾 수정: 페이지 로드 시 localStorage에서 저장된 이름 불러오기
     document.addEventListener('DOMContentLoaded', function() {
-        // 농장 이름 기본값 설정
-        document.getElementById('farm-name').textContent = defaultFarmName;
+        const farmNameElement = document.getElementById('farm-name');
 
-        // 초기 상태 색상 설정
+        // localStorage에서 이름 가져오기
+        const savedName = localStorage.getItem(FARM_NAME_KEY);
+
+        if (savedName) {
+            // 저장된 이름이 있으면 그 값을 사용
+            farmNameElement.textContent = savedName;
+        } else {
+            // 저장된 이름이 없으면 기본값 사용
+            farmNameElement.textContent = defaultFarmName;
+        }
+
+
+        // 초기 상태 색상 설정 (기존 로직 유지)
         const devices = ['fan', 'pump', 'led'];
         devices.forEach(device => {
             const statusElement = document.getElementById(device + '-status');
             const status = statusElement.textContent;
 
-            if (device === 'pump' && status === 'AUTO') {
-                statusElement.style.color = '#9CCC65'; // AUTO는 중립색
-            } else if (status === 'ON') {
-                statusElement.style.color = '#D36C2F'; // ON은 주황
-            } else { // OFF
-                statusElement.style.color = '#FF7043'; // OFF는 연한 주황
+            if (status === 'ON') {
+                statusElement.classList.add('status-on');
+            } else if (status === 'OFF') {
+                statusElement.classList.add('status-off');
+            } else if (status === 'AUTO') {
+                statusElement.classList.add('status-auto');
             }
         });
     });
 
-    // 시간 업데이트 함수를 DOMContentLoaded 밖에서 호출하여 즉시 실행
     updateTime();
     setInterval(updateTime, 1000);
 </script>
