@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트팜 - 싱그러운 초록빛 여름 에디션</title>
+
+    <style>
+        /* 폰트 및 기본 설정 */
+        body {
+            /* 🎨 변경: 전체적인 배경을 연한 초록빛으로 */
+            font-family: 'Consolas', 'Malgun Gothic', monospace;
+            background-color: #E8F5E9; /* 아주 연한 풀잎색 / 민트 그린 */
+            color: #1B5E20; /* 짙은 녹색 계열 글자색 */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* 헤더 */
+        header {
+            /* 🎨 변경: 헤더 색상도 초록빛과 어울리게 */
+            background-color: #4CAF50; /* 중간 톤의 초록색 */
+            color: #FFFFFF; /* 흰색 글씨 */
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 3px solid #66BB6A;
+        }
+
+        #farm-name-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        #farm-name {
+            font-size: 2.2em;
+            margin: 0;
+            margin-right: 15px;
+        }
+
+        #edit-name-btn {
+            /* 🎨 변경: 버튼 색상도 초록빛과 어울리게 */
+            background-color: #66BB6A;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+        }
+        #edit-name-btn:hover {
+            background-color: #388E3C; /* 짙은 녹색 */
+        }
+
+        header p {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        #current-time {
+            font-size: 1.0em;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-top: 10px;
+            padding-top: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        /* 컨테이너 및 레이아웃 */
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 25px auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 데이터/제어 패널 공통 스타일 */
+        .dashboard-panel {
+            flex: 1;
+            /* 🎨 변경: 패널 테두리와 그림자도 초록색 계열로 */
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.4); /* 헤더색 계열 */
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(3px);
+            transition: box-shadow 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+        .dashboard-panel:hover {
+            box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
+        }
+
+        /* 제목 */
+        h2 {
+            /* 🎨 변경: 제목색도 진한 초록색으로 */
+            color: #2E7D32; /* 짙은 초록색 */
+            border-bottom: 1px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .data-item {
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+        .data-item strong {
+            display: block;
+            font-size: 1.2em;
+            color: #1B5E20; /* 짙은 녹색 */
+            margin-bottom: 5px;
+        }
+        /* 데이터 값 색상 */
+        .data-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #33691E; /* 강조를 위한 짙은 녹색 */
+        }
+
+        /* 프로그레스바 */
+        progress {
+            width: 100%; height: 8px; -webkit-appearance: none; appearance: none; border-radius: 5px; margin-top: 5px;
+        }
+        progress::-webkit-progress-bar { background-color: #C8E6C9; border-radius: 5px; } /* 밝은 녹색 */
+        progress::-webkit-progress-value { background-color: #66BB6A; border-radius: 5px; } /* 채우는 색상 */
+        progress::-moz-progress-bar { background-color: #66BB6A; border-radius: 5px; }
+
+        /* 제어 패널 버튼 */
+        .control-panel p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 15px;
+        }
+        .control-panel button {
+            /* 🎨 변경: 버튼 색상도 초록색 계열로 */
+            background-color: #66BB6A; /* 중간 녹색 */
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .control-panel button:hover {
+            background-color: #4CAF50; /* 짙은 녹색 */
+            box-shadow: 0 0 10px #81C784;
+        }
+
+        /* 장치 상태 텍스트 색상 */
+        .status-on { color: #388E3C; } /* ON 색상 (짙은 녹색) */
+        .status-off { color: #A5D6A7; } /* OFF 색상 (연한 녹색) */
+        .status-auto { color: #66BB6A; } /* AUTO 색상 (기존 중간 녹색) */
+
+
+        /* 🌿 마우스 나뭇잎 이펙트 스타일 */
+        .leaf-particle-summer {
+            position: absolute;
+            width: 15px; height: 15px;
+            background-color: transparent;
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            pointer-events: none;
+            opacity: 0;
+            animation: summerLeafFall 2s forwards;
+            transform-origin: center center;
+            z-index: 9999;
+        }
+        /* 여름 나뭇잎 색상들 (파릇한 초록색 계열 유지) */
+        .leaf-light-green { background-color: rgba(102, 187, 106, 0.8); }
+        .leaf-medium-green { background-color: rgba(67, 160, 71, 0.85); }
+        .leaf-dark-green { background-color: rgba(27, 94, 32, 0.9); }
+        .leaf-lime { background-color: rgba(174, 234, 0, 0.7); }
+
+        @keyframes summerLeafFall {
+            0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0.8; }
+            100% {
+                transform: translate(calc(var(--rand-x) * 1px), calc(var(--rand-y) * 1px)) scale(1.2) rotate(calc(var(--rand-deg) * 1deg));
+                opacity: 0;
+            }
+        }
+
+        /* 🌿 배경 나뭇잎 이펙트 스타일 */
+        .background-leaf-summer {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            background-color: transparent;
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 9000;
+            animation-name: backgroundSummerLeafFall;
+            animation-duration: var(--leaf-duration-summer);
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+        /* 배경 나뭇잎 색상 (초록색 계열 유지) */
+        .bg-leaf-light-green { background-color: rgba(102, 187, 106, 0.6); }
+        .bg-leaf-medium-green { background-color: rgba(67, 160, 71, 0.7); }
+        .bg-leaf-dark-green { background-color: rgba(27, 94, 32, 0.75); }
+        .bg-leaf-lime { background-color: rgba(174, 234, 0, 0.5); }
+
+        /* 배경 나뭇잎 애니메이션 (위에서 아래로 자연스럽게 낙하) */
+        @keyframes backgroundSummerLeafFall {
+            0% {
+                transform: translateX(var(--start-x)) translateY(-300px) scale(var(--leaf-scale-summer)) rotate(0deg);
+                opacity: 0.2;
+            }
+            10% { opacity: var(--leaf-opacity-summer); }
+            90% { opacity: var(--leaf-opacity-summer); }
+            100% {
+                transform: translateX(calc(var(--end-x) + (var(--wind-x-summer) * 1px))) translateY(calc(100vh + 50px)) scale(var(--leaf-scale-summer)) rotate(calc(var(--rand-deg-summer) * 1deg));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div id="farm-name-container">
+        <h1 id="farm-name"></h1> <button id="edit-name-btn" onclick="editFarmName()">수정</button>
+    </div>
+    <div id="current-time"></div>
+</header>
+
+<div class="container">
+    <section class="dashboard-panel data-panel">
+        <h2>📊 실시간 환경 데이터</h2>
+
+        <div class="data-item">
+            <strong>온도 (Temperature)</strong>
+            <div class="data-value" id="temperature">24.5 °C</div>
+            <progress id="temp-gauge" value="24.5" max="40"></progress>
+        </div>
+
+        <div class="data-item">
+            <strong>습도 (Humidity)</strong>
+            <div class="data-value" id="humidity">65 %</div>
+            <progress id="humi-gauge" value="65" max="100"></progress>
+        </div>
+
+        <div class="data-item">
+            <strong>토양 수분 (Soil Moisture)</strong>
+            <div class="data-value" id="soil-moisture">55 %</div>
+            <progress id="soil-gauge" value="55" max="100"></progress>
+        </div>
+    </section>
+
+    <section class="dashboard-panel control-panel">
+        <h2>⚙️ 장치 제어 및 상태</h2>
+
+        <p>환풍기 상태: <span id="fan-status">OFF</span></p>
+        <button onclick="controlDevice('fan')">환풍기 상태 전환</button>
+
+        <p>펌프 상태: <span id="pump-status">AUTO</span></p>
+        <button onclick="controlDevice('pump')">펌프 상태 전환</button>
+
+        <p>LED 조명: <span id="led-status">ON</span></p>
+        <button onclick="controlDevice('led')">LED 조명 상태 전환</button>
+    </section>
+</div>
+
+<script>
+    // 💡 변경: localStorage 키 정의
+    const FARM_NAME_KEY = 'smartFarmName';
+    const defaultFarmName = " ~식물 관리창 ";
+
+    function updateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        const timeString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+        document.getElementById('current-time').textContent = timeString;
+    }
+
+    function editFarmName() {
+        const farmNameElement = document.getElementById('farm-name');
+
+        // 💾 수정: 현재 로드된 이름을 기본값으로 사용
+        const currentDisplayedName = farmNameElement.textContent;
+        const newName = prompt("변경할 헤더 명칭:", currentDisplayedName);
+
+        if (newName !== null && newName.trim() !== "") {
+            const trimmedName = newName.trim();
+            farmNameElement.textContent = trimmedName;
+
+            // 💾 추가: localStorage에 변경된 이름 저장
+            localStorage.setItem(FARM_NAME_KEY, trimmedName);
+
+            alert(" 헤더가 '" + trimmedName + "'(으)로 변경됩니다.");
+        } else if (newName !== null) {
+            alert("공백은 허용 안함 기존 이름이 유지.");
+        }
+    }
+
+    function controlDevice(device) {
+        const statusElement = document.getElementById(device + '-status');
+        let currentStatus = statusElement.textContent;
+        let newStatus;
+
+        const ON_CLASS = 'status-on';
+        const OFF_CLASS = 'status-off';
+        const AUTO_CLASS = 'status-auto';
+
+        if (device === 'pump' && currentStatus === 'AUTO') {
+             currentStatus = 'OFF';
+        }
+
+        if (currentStatus === 'ON') {
+            newStatus = 'OFF';
+            statusElement.classList.remove(ON_CLASS);
+            statusElement.classList.add(OFF_CLASS);
+        } else {
+            newStatus = 'ON';
+            statusElement.classList.remove(OFF_CLASS, AUTO_CLASS);
+            statusElement.classList.add(ON_CLASS);
+        }
+
+        if (device === 'pump' && newStatus === 'OFF') {
+            newStatus = 'AUTO';
+            statusElement.classList.remove(ON_CLASS, OFF_CLASS);
+            statusElement.classList.add(AUTO_CLASS);
+        }
+
+        statusElement.textContent = newStatus;
+        console.log(device + " 장치를 " + newStatus + "로 전환 명령 전송");
+        alert(device + " 장치를 " + newStatus + "로 전환했어요!");
+    }
+
+    const mouseLeafColorsSummer = ['leaf-light-green', 'leaf-medium-green', 'leaf-dark-green', 'leaf-lime'];
+
+    document.addEventListener('mousemove', function(e) {
+        const particle = document.createElement('div');
+        particle.className = 'leaf-particle-summer';
+        document.body.appendChild(particle);
+
+        const randomColorClass = mouseLeafColorsSummer[Math.floor(Math.random() * mouseLeafColorsSummer.length)];
+        particle.classList.add(randomColorClass);
+
+        const size = Math.random() * 8 + 12;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+
+        particle.style.left = (e.clientX - size / 2) + 'px';
+        particle.style.top = (e.clientY - size / 2) + 'px';
+
+        particle.style.setProperty('--rand-x', Math.random() * 200 - 100);
+        particle.style.setProperty('--rand-y', Math.random() * 200 + 50);
+        particle.style.setProperty('--rand-deg', Math.random() * 720 - 360);
+
+        particle.style.animationName = 'summerLeafFall';
+
+        particle.addEventListener('animationend', function() {
+            particle.remove();
+        });
+    });
+
+    const bgLeafColorsSummer = ['bg-leaf-light-green', 'bg-leaf-medium-green', 'bg-leaf-dark-green', 'bg-leaf-lime'];
+
+    function createBackgroundLeafSummer() {
+        const leaf = document.createElement('div');
+        leaf.className = 'background-leaf-summer';
+        document.body.appendChild(leaf);
+
+        const randomColorClass = bgLeafColorsSummer[Math.floor(Math.random() * bgLeafColorsSummer.length)];
+        leaf.classList.add(randomColorClass);
+
+        const size = Math.random() * 10 + 15;
+        leaf.style.width = size + 'px';
+        leaf.style.height = size + 'px';
+
+        const startX = Math.random() * window.innerWidth;
+        leaf.style.left = startX + 'px';
+
+        const duration = Math.random() * 6 + 8;
+
+        leaf.style.setProperty('--start-x', startX + 'px');
+        leaf.style.setProperty('--end-x', (startX + (Math.random() * 300 - 150)) + 'px');
+        leaf.style.setProperty('--rand-deg-summer', Math.random() * 1080 - 540);
+        leaf.style.setProperty('--leaf-duration-summer', duration + 's');
+        leaf.style.setProperty('--leaf-scale-summer', Math.random() * 0.6 + 0.7);
+        leaf.style.setProperty('--leaf-opacity-summer', Math.random() * 0.3 + 0.6);
+
+        leaf.style.setProperty('--wind-x-summer', Math.random() * 80 - 40);
+
+        leaf.style.animationName = 'backgroundSummerLeafFall';
+
+        leaf.addEventListener('animationend', function() {
+            leaf.remove();
+        });
+    }
+
+    setInterval(createBackgroundLeafSummer, 300);
+
+    // 💾 수정: 페이지 로드 시 localStorage에서 저장된 이름 불러오기
+    document.addEventListener('DOMContentLoaded', function() {
+        const farmNameElement = document.getElementById('farm-name');
+
+        // localStorage에서 이름 가져오기
+        const savedName = localStorage.getItem(FARM_NAME_KEY);
+
+        if (savedName) {
+            // 저장된 이름이 있으면 그 값을 사용
+            farmNameElement.textContent = savedName;
+        } else {
+            // 저장된 이름이 없으면 기본값 사용
+            farmNameElement.textContent = defaultFarmName;
+        }
+
+
+        // 초기 상태 색상 설정 (기존 로직 유지)
+        const devices = ['fan', 'pump', 'led'];
+        devices.forEach(device => {
+            const statusElement = document.getElementById(device + '-status');
+            const status = statusElement.textContent;
+
+            if (status === 'ON') {
+                statusElement.classList.add('status-on');
+            } else if (status === 'OFF') {
+                statusElement.classList.add('status-off');
+            } else if (status === 'AUTO') {
+                statusElement.classList.add('status-auto');
+            }
+        });
+    });
+
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>
+</body>
+</html>

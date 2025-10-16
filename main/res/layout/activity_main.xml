@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fi"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="32dp"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/9214589741"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"></com.google.android.gms.ads.AdView>
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="119dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="216dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_ripple" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="119dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="220dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_ripple" />
+
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="119dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="376dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_ripple" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="119dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="214dp"
+        android:layout_marginTop="400dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_ripple" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="검색어 (예: cat)" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="검색" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

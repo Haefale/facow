@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#f0f0f0">
+
+    <RelativeLayout
+        android:id="@+id/flip_container"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        >
+
+        <ImageView
+            android:id="@+id/cat_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/cat"
+            android:scaleType="centerCrop"
+            android:rotationY="180" />
+
+        <ImageView
+            android:id="@+id/dog_face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/rabbit"
+            android:scaleType="centerCrop" />
+
+    </RelativeLayout>
+</RelativeLayout>
